@@ -125,5 +125,7 @@ public interface StatementVisitor {
 
     void visit(AlterSystemStatement alterSystemStatement);
 
+    void visit(UnloadStatement unloadStatement);
+
     void visit(UnsupportedStatement unsupportedStatement);
 }

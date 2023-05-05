@@ -26,6 +26,7 @@ import net.sf.jsqlparser.statement.ShowStatement;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.Statements;
+import net.sf.jsqlparser.statement.UnloadStatement;
 import net.sf.jsqlparser.statement.UnsupportedStatement;
 import net.sf.jsqlparser.statement.UseStatement;
 import net.sf.jsqlparser.statement.alter.Alter;
@@ -428,6 +429,16 @@ public class StatementDeParser extends AbstractDeParser<Statement> implements St
     @Override
     public void visit(AlterSystemStatement alterSystemStatement) {
         alterSystemStatement.appendTo(buffer);
+    }
+
+    @Override
+    public void visit(UnloadStatement unloadStatement) {
+        buffer.append("UNLOAD (");
+        if (unloadStatement.getSelectBody() != null) {
+            unloadStatement.getSelectBody().accept(this);
+        }
+        buffer.append(") ");
+        UnloadStatement.appendParameters(buffer, unloadStatement.getParameters());
     }
 
     @Override

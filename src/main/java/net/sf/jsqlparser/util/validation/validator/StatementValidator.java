@@ -27,6 +27,7 @@ import net.sf.jsqlparser.statement.ShowStatement;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.Statements;
+import net.sf.jsqlparser.statement.UnloadStatement;
 import net.sf.jsqlparser.statement.UnsupportedStatement;
 import net.sf.jsqlparser.statement.UseStatement;
 import net.sf.jsqlparser.statement.alter.Alter;
@@ -305,6 +306,11 @@ public class StatementValidator extends AbstractValidator<Statement> implements 
     @Override
     public void visit(AlterSystemStatement alterSystemStatement) {
         // TODO: not yet implemented
+    }
+
+    @Override
+    public void visit(UnloadStatement unloadStatement) {
+        unloadStatement.getSelectBody().accept(this);
     }
 
     @Override

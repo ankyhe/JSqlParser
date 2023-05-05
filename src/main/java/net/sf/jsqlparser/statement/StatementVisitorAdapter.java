@@ -225,6 +225,14 @@ public class StatementVisitorAdapter implements StatementVisitor {
     public void visit(AlterSystemStatement alterSystemStatement) {}
 
     @Override
+    public void visit(UnloadStatement unloadStatement) {
+        if (unloadStatement.getSelectBody() != null) {
+            unloadStatement.getSelectBody().accept(this);
+        }
+
+    }
+
+    @Override
     public void visit(UnsupportedStatement unsupportedStatement) {
 
     }

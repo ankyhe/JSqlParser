@@ -447,6 +447,7 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |   <K_YAML:"YAML">
 |   <K_YES:"YES">
 |   <K_ZONE:"ZONE">
+|   <K_UNLOAD:"UNLOAD">
 }
 
 TOKEN : /* Statement Separators */
@@ -711,6 +712,8 @@ Statement SingleStatement() :
             stm = PurgeStatement()
             |
             stm = AlterSystemStatement()
+            |
+            stm = UnloadStatement()
         )
         { return stm; }
     } catch (ParseException e) {
@@ -1955,6 +1958,7 @@ Select Select() #Select:
         return select.withWithItemsList(with);
     }
 }
+
 
 ParenthesedSelect ParenthesedSelect() #ParenthesedSelect:
 {
@@ -6325,6 +6329,32 @@ AlterSystemStatement AlterSystemStatement():
 
     {
         return new AlterSystemStatement(operation, parameters);
+    }
+}
+
+UnloadStatement UnloadStatement(): 
+{
+    Select select = null;
+    List<String> parameters = new LinkedList<String>();
+}
+{
+    <K_UNLOAD>
+    "("
+    try {
+         select = Select()
+    } catch (ParseException e) {
+        if (errorRecovery) {
+            parseErrors.add(e);
+            error_skipto(ST_SEMICOLON);
+        } else {
+            throw e;
+        }
+    }
+    ")"
+    parameters = captureRest()
+
+    {
+        return new UnloadStatement(select, parameters);
     }
 }
 

@@ -120,6 +120,7 @@ import net.sf.jsqlparser.statement.ShowStatement;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.Statements;
+import net.sf.jsqlparser.statement.UnloadStatement;
 import net.sf.jsqlparser.statement.UnsupportedStatement;
 import net.sf.jsqlparser.statement.UseStatement;
 import net.sf.jsqlparser.statement.alter.Alter;
@@ -1158,6 +1159,11 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
 
     @Override
     public void visit(AlterSystemStatement alterSystemStatement) {
+        // no tables involved in this statement
+    }
+
+    @Override
+    public void visit(UnloadStatement unloadStatement) {
         // no tables involved in this statement
     }
 
